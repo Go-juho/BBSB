@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 - 목록</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<!-- HEADER -->
+<header th:insert="common/header.html" id="header"></header>
+<div class="container">
+    <form action="/board" method="GET">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input name="keyword" type="text" class="form-control input-sm" th:value="${keyword}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary">검색하기</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr class="text-center">
+                <th scope="col">번호</th>
+                <th scope="col">글제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr class="text-center" th:if="${not #lists.isEmpty(boardList)}" th:each="board : ${boardList}">
+                <td scope="row">
+                    <a th:href="@{'/board/post/' + ${board.id}}">
+                        <span th:text="${board.id}"></span>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{'/board/post/' + ${board.id}}">
+                        <span th:text="${board.title}"></span>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{'/board/post/' + ${board.id}}">
+                        <span th:text="${board.writer}"></span>
+                    </a>
+                </td>
+                <td>
+                    <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+                </td>
+            </tr>
+        <tr th:unless="${not #lists.isEmpty(boardList)}">
+            <td class="text-center" scope="row">데이터가 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination pagination-lg">
+            <li class="page-item" th:each="pageNum : ${pageList}" th:if="${pageNum != null}" th:inline="text">
+                <a class="page-link" tabindex="-1" th:href="@{'/board/?keyword=' + ${keyword} + '&page=' + ${pageNum}}">[[${pageNum}]]</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="row">
+        <div class="col-auto mr-auto"></div>
+        <div class="col-auto">
+            <a class="btn btn-primary" th:href="@{/board/post}" role="button">글쓰기</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

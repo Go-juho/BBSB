@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="@{'게시판 - ' + ${boardDto.title}}"></title>
+    <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
+</head>
+<body>
+<header th:insert="common/header.html"></header>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${boardDto.title}"></h5>
+            <p class="card-text m-0" th:text="${boardDto.writer}"></p>
+            <p class="card-text"><small class="text-muted" th:text="@{'작성일 : ' + ${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}}"></small></p>
+            <h3 class="card-text" th:text="${boardDto.content}"></h3>
+            <div th:if="${boardDto.fileId != null}">
+                첨부파일 :
+                <a class="card-text" th:href="@{'/board/download/' + ${boardDto.fileId}}" th:text="${fileName}"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 수정/삭제 -->
+    <div class="row mt-3">
+        <div class="col-auto mr-auto"></div>
+        <div class="col-auto">
+            <a th:href="@{'/board/post/edit/' + ${boardDto.id}}">
+                <button class="btn btn-primary">수정</button>
+            </a>
+        </div>
+
+        <div class="col-auto">
+            <form id="delete-form" th:action="@{'/board/post/' + ${boardDto.id}}" method="post">
+                <input type="hidden" name="_method" value="delete"/>
+                <button class="btn btn-danger" id="delete-btn">삭제</button>
+            </form>
+        </div>
+
+        <div class="col-auto">
+            <a th:href="@{'/board'}">
+                <button class="btn btn-primary">목록</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- 변수 셋팅 -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var boardDto = /*[[${boardDto}]]*/ "";
+        /*]]>*/
+    </script>
+</div>
+
+<!-- script -->
+<script th:inline="javascript" th:src="@{/js/board.js}"></script>
+</body>
+</html>

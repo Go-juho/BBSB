@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+    <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
+</head>
+<body>
+<!-- HEADER -->
+<header th:insert="common/header.html" id="header"></header>
+<h1>메인 페이지</h1>
+<hr>
+<a class="btn btn-primary" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+<a class="btn btn-danger" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+<a class="btn btn-primary" sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
+<a class="btn btn-primary" sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a>
+<a class="btn btn-primary" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
+</body>
+</html>
